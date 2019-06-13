@@ -8,7 +8,7 @@
                 <input type="search" name="city" placeholder="输入学校、商务楼、地址" class="city_input input_style" required v-model='inputVaule'>
             </div>
             <div>
-                <input type="submit" name="submit" class="city_submit input_style" @click='postpois'>
+                <input type="submit" name="submit" class="city_submit input_style" @click='postpois' value="提交">
             </div>
         </form>
         <header v-if="historytitle" class="pois_search_history">搜索历史</header>
@@ -16,8 +16,9 @@
             <li v-for="(item, index) in placelist" @click='nextpage(index, item.geohash)' :key="index">
                 <h4 class="pois_name ellipsis">{{item.name}}</h4>
                 <p class="pois_address ellipsis">{{item.address}}</p>
-            </li>  
+            </li>
         </ul>
+        <footer v-if="historytitle&&placelist.length" class="clear_all_history" @click="clearAll">清空所有</footer>
         <div class="search_none_place" v-if="placeNone">很抱歉！无搜索结果</div>
     </div>
 </template>
@@ -25,13 +26,13 @@
 <script>
     import headTop from 'src/components/header/head'
     import {currentcity, searchplace} from 'src/service/getData'
-    import {getStore, setStore} from 'src/config/mUtils'
+    import {getStore, setStore, removeStore} from 'src/config/mUtils'
 
     export default {
     	data(){
             return{
                 inputVaule:'', // 搜索地址
-                cityid:'', // 当前城市id 
+                cityid:'', // 当前城市id
                 cityname:'', // 当前城市名字
                 placelist:[], // 搜索城市列表
                 placeHistory:[], // 历史搜索记录
@@ -46,10 +47,7 @@
             currentcity(this.cityid).then(res => {
                 this.cityname = res.name;
             })
-            //获取搜索历史记录
-            if (getStore('placeHistory')) {
-                this.placelist = JSON.parse(getStore('placeHistory'));
-            }
+            this.initData();
         },
 
         components:{
@@ -61,6 +59,14 @@
         },
 
         methods:{
+            initData(){
+                //获取搜索历史记录
+                if (getStore('placeHistory')) {
+                    this.placelist = JSON.parse(getStore('placeHistory'));
+                }else{
+                    this.placelist = [];
+                }
+            },
             //发送搜索信息inputVaule
             postpois(){
                 //输入值不为空时才发送信息
@@ -79,7 +85,7 @@
             nextpage(index, geohash){
                 let history = getStore('placeHistory');
                 let choosePlace = this.placelist[index];
-                if (history) { 
+                if (history) {
                     let checkrepeat = false;
                     this.placeHistory = JSON.parse(history);
                     this.placeHistory.forEach(item => {
@@ -95,6 +101,10 @@
                 }
                 setStore('placeHistory',this.placeHistory)
                 this.$router.push({path:'/msite', query:{geohash}})
+            },
+            clearAll(){
+                removeStore('placeHistory');
+                this.initData();
             }
         }
     }
@@ -167,5 +177,11 @@
         color: #333;
         background-color: #fff;
         text-indent: 0.5rem;
+    }
+    .clear_all_history{
+        @include sc(0.7rem, #666);
+        text-align: center;
+        line-height: 2rem;
+        background-color: #fff;
     }
 </style>

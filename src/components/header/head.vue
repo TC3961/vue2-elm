@@ -11,7 +11,7 @@
             <svg class="user_avatar" v-if="userInfo">
                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#user"></use>
             </svg>
-            <span class="login_span" v-else>登陆|注册</span>
+            <span class="login_span" v-else>登录|注册</span>
         </router-link>
         <section class="title_head ellipsis" v-if="headTitle">
             <span class="title_text">{{headTitle}}</span>
@@ -28,16 +28,13 @@
     export default {
     	data(){
             return{
-                
+
             }
         },
-        created(){
+        mounted(){
             //获取用户信息
             this.getUserInfo();
 
-        },
-        mounted(){
-            
         },
         props: ['signinUp', 'headTitle', 'goBack'],
         computed: {
@@ -68,7 +65,7 @@
     }
     .head_goback{
         left: 0.4rem;
-        @include wh(0.6rem, 0.8rem);
+        @include wh(0.6rem, 1rem);
         line-height: 2.2rem;
         margin-left: .4rem;
     }

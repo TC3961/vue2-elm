@@ -27,7 +27,7 @@ const foodDetail = r => require.ensure([], () => r(require('../page/shop/childre
 const shopDetail = r => require.ensure([], () => r(require('../page/shop/children/shopDetail')), 'shopDetail')
 const shopSafe = r => require.ensure([], () => r(require('../page/shop/children/children/shopSafe')), 'shopSafe')
 const info = r => require.ensure([], () => r(require('../page/profile/children/info')), 'info')
-const setusername = r => require.ensure([], () => r(require('../page/profile/children/setusername')), 'setusername')
+const setusername = r => require.ensure([], () => r(require('../page/profile/children/children/setusername')), 'setusername')
 const address = r => require.ensure([], () => r(require('../page/profile/children/children/address')), 'address')
 const add = r => require.ensure([], () => r(require('../page/profile/children/children/children/add')), 'add')
 const addDetail = r => require.ensure([], () => r(require('../page/profile/children/children/children/children/addDetail')), 'addDetail')
@@ -53,7 +53,7 @@ export default [{
     path: '/',
     component: App, //顶层路由，对应index.html
     children: [ //二级路由。对应App.vue
-        //地址为空时跳转home页面 
+        //地址为空时跳转home页面
         {
             path: '',
             redirect: '/home'
@@ -72,18 +72,19 @@ export default [{
         {
             path: '/msite',
             component: msite,
+            meta: { keepAlive: true },
         },
         //特色商铺列表页
         {
             path: '/food',
             component: food
         },
-        //搜索页 
+        //搜索页
         {
             path: '/search/:geohash',
             component: search
         },
-        //商铺详情页 
+        //商铺详情页
         {
             path: '/shop',
             component: shop,
@@ -99,7 +100,7 @@ export default [{
                 }, ]
             }]
         },
-        //确认订单页 
+        //确认订单页
         {
             path: '/confirmOrder',
             component: confirmOrder,
@@ -128,12 +129,12 @@ export default [{
                 }, ]
             }, ]
         },
-        //登陆注册页 
+        //登录注册页
         {
             path: '/login',
             component: login
         },
-        //个人信息页 
+        //个人信息页
         {
             path: '/profile',
             component: profile,
@@ -141,6 +142,9 @@ export default [{
                 path: 'info', //个人信息详情页
                 component: info,
                 children: [{
+                    path: 'setusername',
+                    component: setusername,
+                },{
                     path: 'address',
                     component: address,     //编辑地址
                     children:[{
@@ -154,20 +158,16 @@ export default [{
                 }]
             },
             {
-                path: 'setusername',
-                component: setusername,
-            },
-            {
                 path: 'service', //服务中心
                 component: service,
             },]
         },
-        //修改密码页 
+        //修改密码页
         {
             path: '/forget',
             component: forget
         },
-        //订单列表页 
+        //订单列表页
         {
             path: '/order',
             component: order,
@@ -176,7 +176,7 @@ export default [{
                 component: orderDetail,
             }, ]
         },
-        //vip卡页   
+        //vip卡页
         {
             path: '/vipcard',
             component: vipcard,
@@ -212,16 +212,16 @@ export default [{
         },
         //余额
         {
-            path: 'balance', 
+            path: 'balance',
             component: balance,
             children: [{
                 path: 'detail', //余额说明
                 component: balanceDetail,
             }, ]
         },
-        //我的优惠页 
+        //我的优惠页
         {
-            path: 'benefit', 
+            path: 'benefit',
             component: benefit,
             children: [{
                 path: 'coupon', //代金券说明
@@ -242,7 +242,7 @@ export default [{
         },
         //我的积分页
         {
-            path: 'points', 
+            path: 'points',
             component: points,
             children: [{
                 path: 'detail', //积分说明

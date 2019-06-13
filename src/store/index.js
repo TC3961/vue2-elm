@@ -18,7 +18,7 @@ const state = {
 	invoice: false,//开发票
 	newAddress: [], //确认订单页新的地址
 	searchAddress: null,//搜索并选择的地址
-	geohash: 'wtw3sm0q087',//地址geohash值
+	geohash: '31.22299,121.36025',//地址geohash值
 	choosedAddress: null,//选择地址
 	addressIndex: null,//选择地址的索引值
 	needValidation: null,//确认订单时是否需要验证
@@ -27,7 +27,7 @@ const state = {
 	orderParam: null,//订单的参数
 	orderMessage: null, //订单返回的信息
 	orderDetail: null, //订单详情
-	login: true,//是否登陆
+	login: true,//是否登录
 	imgPath:null,//头像地址
 	removeAddress:[],//移除地址
 	addAddress:'',		//新增地址

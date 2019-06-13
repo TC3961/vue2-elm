@@ -11,7 +11,6 @@ module.exports = {
         assetsSubDirectory: 'static',
         assetsPublicPath: '/elm/',
         productionSourceMap: true,
-        // Gzip off by default as many popular static hosts such as
         // Surge or Netlify already gzip all static assets for you.
         // Before setting to `true`, make sure to:
         // npm install --save-dev compression-webpack-plugin
@@ -22,7 +21,7 @@ module.exports = {
         env: {
             NODE_ENV: '"development"'
         },
-        port: 8088,
+        port: 8000,
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
         context: [ //代理路径
@@ -36,8 +35,10 @@ module.exports = {
             '/member',
             '/promotion',
             '/eus',
+            '/payapi',
+            '/img',
         ],
-        proxypath: 'https://mainsite-restapi.ele.me',
+        proxypath: 'http://cangdu.org:8001',
         // CSS Sourcemaps off by default because relative paths are "buggy"
         // with this option, according to the CSS-Loader README
         // (https://github.com/webpack/css-loader#sourcemaps)

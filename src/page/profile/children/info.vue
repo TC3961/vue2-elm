@@ -6,7 +6,7 @@
                 <input type="file" class="profileinfopanel-upload" @change="uploadAvatar">
                 <h2>头像</h2>
                 <div class="headportrait-div">
-                    <img :src="imgPath" class="headportrait-div-top" v-if="avatar">
+                    <img  v-if="userInfo" :src="imgBaseUrl + userInfo.avatar" class="headportrait-div-top">
                     <span class="headportrait-div-top" v-else>
                         <svg>
                             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#avatar-default"></use>
@@ -19,7 +19,7 @@
                     </span>
                 </div>
             </section>
-            <router-link to="/profile/setusername" class="info-router">
+            <router-link to="/profile/info/setusername" class="info-router">
                 <section class="headportrait headportraitwo">
                     <h2>用户名</h2>
                     <div class="headportrait-div">
@@ -105,8 +105,11 @@
 <script>
     import {mapMutations, mapState} from 'vuex'
     import headTop from 'src/components/header/head'
+    import {signout} from 'src/service/getData'
     import alertTip from 'src/components/common/alertTip'
     import {getImgPath} from 'src/components/common/mixin'
+    import {imgBaseUrl} from 'src/config/env'
+    import {removeStore} from 'src/config/mUtils'
 
     export default {
         data(){
@@ -116,22 +119,23 @@
                 infotel:'',     //用户手机
                 avatar:'',      //用户头像
                 show:false,     //显示提示框
-                isEnter:true,  //是否登陆
+                isEnter:true,  //是否登录
                 isLeave:false, //是否退出
                 showAlert: false,
                 alertText: null,
+                imgBaseUrl,
             }
         },
         beforeDestroy(){
             clearTimeout(this.timer)
         },
         components: {
-            headTop, 
+            headTop,
             alertTip,
         },
         mixins: [getImgPath],
         computed:{
-             ...mapState([
+            ...mapState([
                 'userInfo', 'imgPath'
             ]),
         },
@@ -155,11 +159,13 @@
                     this.show=false;
                 },200)
             },
-            //退出登陆
-            outLogin(){
+            //退出登录
+            async outLogin(){
                 this.OUT_LOGIN();
                 this.waitingThing();
                 this.$router.go(-1);
+                removeStore('user_id')
+                await signout();
             },
             changePhone(){
                 this.showAlert = true;
@@ -178,7 +184,9 @@
                               body: data
                             })
                         let res = await response.json();
-                        this.SAVE_AVANDER(this.getImgPath(res));
+                        if (res.status == 1) {
+                            this.userInfo.avatar = res.image_path;
+                        }
                     }catch (error) {
                         this.showAlert = true;
                         this.alertText = '上传失败';
@@ -198,10 +206,10 @@
         }
     }
 </script>
-  
+
 <style lang="scss" scoped>
     @import 'src/style/mixin.scss';
-  
+
     .rating_page{
         position: absolute;
         top: 0;
@@ -242,7 +250,7 @@
             .headportrait-div{
                 span{
                     display:inline-block;
-                    
+
                     svg{
                         @include wh(100%,100%);
                     }
@@ -263,7 +271,7 @@
             margin-top:0;
             padding:.3rem .4rem;
             .headportrait-div{
-                @include fj(left) 
+                @include fj(left)
                 p{
                     text-align:left;
                     line-height:1.39rem;
